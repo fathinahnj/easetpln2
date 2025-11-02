@@ -13,7 +13,11 @@ return new class extends Migration
     {
         Schema::create('ruangans', function (Blueprint $table) {
             $table->id();
+            $table->integer('No');
+            $table->string('Unit');
+            $table->string('Ruangan');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
