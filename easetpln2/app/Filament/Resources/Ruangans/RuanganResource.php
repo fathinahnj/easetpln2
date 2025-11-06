@@ -18,7 +18,7 @@ class RuanganResource extends Resource
 {
     protected static ?string $model = Ruangan::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedBuildingOffice;
 
     protected static ?string $recordTitleAttribute = 'Unit/Ruangan';
     protected static ?string $navigationLabel = 'Ruangan';
