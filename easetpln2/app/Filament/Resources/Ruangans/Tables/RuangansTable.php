@@ -41,7 +41,20 @@ class RuangansTable
                 //
             ])
             ->recordActions([
-                EditAction::make(),
+                EditAction::make()
+                    ->icon('heroicon-o-pencil')
+                    ->tooltip('Edit data ruangan'),
+            ])
+            ->recordActions([
+                EditAction::make()
+                    ->icon('heroicon-o-pencil')
+                    ->label('')
+                    ->tooltip('Edit'),
+                DeleteAction::make()
+                    ->icon('heroicon-o-trash')
+                    ->label('')
+                    ->color('danger')
+                    ->tooltip('Hapus'),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
