@@ -16,8 +16,9 @@ class RuangansTable
             ->columns([
                 TextColumn::make('No.')
                     ->numeric()
-                    ->sortable()
-                    ->default(fn() => \App\Models\Ruangan::max('No') + 1), // Adds auto-increment behavior
+                    ->label('No.')
+                    ->rowIndex()
+                    ->sortable(),
                 TextColumn::make('Unit')
                     ->searchable(),
                 TextColumn::make('Ruangan')
