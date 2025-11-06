@@ -21,6 +21,9 @@ class RuanganResource extends Resource
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
     protected static ?string $recordTitleAttribute = 'Unit/Ruangan';
+    protected static ?string $navigationLabel = 'Ruangan';
+    protected static ?string $pluralLabel = 'Ruangan';
+    protected static ?string $modelLabel = 'Ruangan';
 
     public static function form(Schema $schema): Schema
     {
