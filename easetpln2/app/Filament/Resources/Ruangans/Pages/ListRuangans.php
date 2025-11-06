@@ -10,6 +10,8 @@ class ListRuangans extends ListRecords
 {
     protected static string $resource = RuanganResource::class;
 
+    protected static ?string $title = 'Ruangan';
+
     protected function getHeaderActions(): array
     {
         return [
