@@ -58,7 +58,8 @@ class RuangansTable
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
-                    DeleteBulkAction::make(),
+                    DeleteBulkAction::make()
+                        ->label('Hapus pilihan'),
                 ]),
             ]);
     }
