@@ -21,6 +21,9 @@ class BarangResource extends Resource
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
     protected static ?string $recordTitleAttribute = 'Barang';
+    protected static ?string $navigationLabel = 'Kelola Barang';
+    protected static ?string $pluralLabel = 'Barang';
+    protected static ?string $modelLabel = 'Barang';
 
     public static function form(Schema $schema): Schema
     {
