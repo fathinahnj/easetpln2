@@ -16,17 +16,20 @@ class BarangsTable
             ->columns([
                 TextColumn::make('no')
                     ->numeric()
+                    ->label('No.')
                     ->sortable(),
                 TextColumn::make('no_reg')
                     ->numeric()
+                    ->label('No. Reg')
                     ->sortable(),
                 TextColumn::make('nama_barang')
+                    ->label('Nama Barang')
                     ->searchable(),
                 TextColumn::make('unit')
-                    ->numeric()
+                    ->label('Unit')
                     ->sortable(),
                 TextColumn::make('ruangan')
-                    ->numeric()
+                    ->label('Ruangan')
                     ->sortable(),
                 TextColumn::make('status'),
                 TextColumn::make('progress_aksi'),
