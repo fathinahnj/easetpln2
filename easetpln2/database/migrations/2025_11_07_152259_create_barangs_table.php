@@ -13,12 +13,12 @@ return new class extends Migration
     {
         Schema::create('barangs', function (Blueprint $table) {
             $table->id();
-            $table->unsignedInteger('No.');
-            $table->unsignedInteger('No. Reg');
-            $table->string('Nama Barang');
-            $table->foreignId('Unit')->constrained('ruangans')->onDelete('cascade');
-            $table->foreignId('Ruangan')->constrained('ruangans')->onDelete('cascade');
-            $table->enum('Status', ['Baik', 'Rusak', 'Perlu Diperbaiki'])->default('Baik');
+            $table->unsignedInteger('no');
+            $table->unsignedInteger('no_reg');
+            $table->string('nama_barang');
+            $table->foreignId('unit')->constrained('ruangans')->onDelete('cascade');
+            $table->foreignId('ruangan')->constrained('ruangans')->onDelete('cascade');
+            $table->enum('status', ['Baik', 'Rusak', 'Perlu Diperbaiki'])->default('Baik');
             $table->enum('progress_aksi', [
                 'Tidak Ada',
                 'Perlu Diganti',
@@ -26,8 +26,8 @@ return new class extends Migration
                 'Belum Ditindak',
                 'Sementara Diperbaiki'
             ])->default('Tidak Ada');
-            $table->string('Deskripsi')->nullable();
-            $table->enum('Urgensi', ['🔴', '🟡', '🟢'])->default('🟢');
+            $table->string('deskripsi')->nullable();
+            $table->enum('urgensi', ['Tinggi', 'Sedang', 'Rendah'])->default('Rendah');
             $table->timestamps();
         });
     }
