@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use SoftDeletes;
 
 class Barang extends Model
 {
@@ -10,6 +11,19 @@ class Barang extends Model
     {
         return $this->belongsTo(Ruangan::class);
     }
+
+    protected $fillable = [
+        'no',
+        'no_reg',      // Add this field
+        'nama_barang',
+        'unit',
+        'ruangan',
+        'status',
+        'progress_aksi',
+        'deskripsi',
+        'urgensi'
+    ];
+
 
     protected static function boot()
     {
