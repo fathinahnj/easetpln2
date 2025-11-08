@@ -44,6 +44,7 @@ class BarangResource extends Resource
                     ->numeric(),
 
                 Forms\Components\TextInput::make('nama_barang')
+                    ->label('Nama Barang')
                     ->required()
                     ->maxLength(255),
 
@@ -54,8 +55,8 @@ class BarangResource extends Resource
 
                 Select::make('ruangan_id')
                     ->label('Ruangan')
-                    ->relationship('ruangan', 'ruangan')
-                    ->searchable()
+                    ->options(Ruangan::pluck('ruangan', 'ruangan'))
+
                     ->required(),
 
                 Select::make('status')
@@ -64,7 +65,42 @@ class BarangResource extends Resource
                         'Perlu Diperbaiki' => 'Perlu Diperbaiki',
                         'Rusak' => 'Rusak',
                     ])
-                    ->default('Baik'),
+                    ->default('Baik')
+                    ->reactive(),
+
+                Select::make('progress_aksi')
+                    ->label('Progress Aksi')
+                    ->options(function (callable $get) {
+                        $status = $get('status');
+                        return match ($status) {
+                            'Baik' => [
+                                'Tidak Ada' => 'Tidak Ada',
+                            ],
+                            'Rusak' => [
+                                'Perlu Diganti' => 'Perlu Diganti',
+                                'Dibuang' => 'Dibuang',
+                            ],
+                            'Perlu Diperbaiki' => [
+                                'Belum Ditindak' => 'Belum Ditindak',
+                                'Sementara Diperbaiki' => 'Sementara Diperbaiki',
+                            ],
+                        };
+                    })
+                    ->required()
+                    ->default('Tidak Ada'),
+
+                Forms\Components\TextInput::make('deskripsi')
+                    ->maxLength(65535),
+
+                Select::make('urgensi')
+                    ->options([
+                        'Rendah' => 'Rendah',
+                        'Sedang' => 'Sedang',
+                        'Tinggi' => 'Tinggi',
+                    ])
+                    ->required()
+                    ->default('Rendah'),
+
             ]);
     }
 
