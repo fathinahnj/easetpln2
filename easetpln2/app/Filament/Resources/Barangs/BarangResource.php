@@ -13,9 +13,10 @@ use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
-use Filament\Forms\Form;
 use Filament\Forms;
+use Filament\Forms\Form;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
 use App\Models\Ruangan;
 
 class BarangResource extends Resource
@@ -29,34 +30,42 @@ class BarangResource extends Resource
     protected static ?string $pluralLabel = 'Barang';
     protected static ?string $modelLabel = 'Barang';
 
-    public static function getFormSchema(): array
+    public static function form(Schema $schema): Schema
     {
-        return [
-            Forms\Components\TextInput::make('no')
-                ->disabled()
-                ->dehydrated(false),
-            Forms\Components\TextInput::make('no_reg')->required(),
-            Forms\Components\TextInput::make('nama_barang')->required(),
+        return $schema
+            ->schema([
+                Forms\Components\TextInput::make('no')
+                    ->disabled()
+                    ->dehydrated(false)
+                    ->default(fn() => \App\Models\Barang::max('no') + 1),
 
-            Select::make('unit')
-                ->label('Unit')
-                ->options(Ruangan::pluck('unit', 'unit'))
-                ->required(),
+                Forms\Components\TextInput::make('no_reg')
+                    ->required()
+                    ->numeric(),
 
-            Select::make('ruangan_id')
-                ->label('Ruangan')
-                ->relationship('ruangan', 'ruangan')
-                ->searchable()
-                ->required(),
+                Forms\Components\TextInput::make('nama_barang')
+                    ->required()
+                    ->maxLength(255),
 
-            Select::make('status')
-                ->options([
-                    'Baik' => 'Baik',
-                    'Perlu Diperbaiki' => 'Perlu Diperbaiki',
-                    'Rusak' => 'Rusak',
-                ])
-                ->default('Baik'),
-        ];
+                Select::make('unit')
+                    ->label('Unit')
+                    ->options(Ruangan::pluck('unit', 'unit'))
+                    ->required(),
+
+                Select::make('ruangan_id')
+                    ->label('Ruangan')
+                    ->relationship('ruangan', 'ruangan')
+                    ->searchable()
+                    ->required(),
+
+                Select::make('status')
+                    ->options([
+                        'Baik' => 'Baik',
+                        'Perlu Diperbaiki' => 'Perlu Diperbaiki',
+                        'Rusak' => 'Rusak',
+                    ])
+                    ->default('Baik'),
+            ]);
     }
 
     public static function table(Table $table): Table
