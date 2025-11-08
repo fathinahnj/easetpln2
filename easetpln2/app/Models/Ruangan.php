@@ -9,6 +9,11 @@ class Ruangan extends Model
 {
     // use HasFactory, SoftDeletes;
 
+    public function barangs()
+    {
+        return $this->hasMany(Barang::class);
+    }
+
     protected $fillable = [
         // 'No',
         'Unit',

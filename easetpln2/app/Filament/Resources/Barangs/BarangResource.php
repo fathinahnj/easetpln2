@@ -13,6 +13,10 @@ use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
+use Filament\Forms\Form;
+use Filament\Forms;
+use Filament\Forms\Components\Select;
+use App\Models\Ruangan;
 
 class BarangResource extends Resource
 {
@@ -25,9 +29,34 @@ class BarangResource extends Resource
     protected static ?string $pluralLabel = 'Barang';
     protected static ?string $modelLabel = 'Barang';
 
-    public static function form(Schema $schema): Schema
+    public static function getFormSchema(): array
     {
-        return BarangForm::configure($schema);
+        return [
+            Forms\Components\TextInput::make('no')
+                ->disabled()
+                ->dehydrated(false),
+            Forms\Components\TextInput::make('no_reg')->required(),
+            Forms\Components\TextInput::make('nama_barang')->required(),
+
+            Select::make('unit')
+                ->label('Unit')
+                ->options(Ruangan::pluck('unit', 'unit'))
+                ->required(),
+
+            Select::make('ruangan_id')
+                ->label('Ruangan')
+                ->relationship('ruangan', 'ruangan')
+                ->searchable()
+                ->required(),
+
+            Select::make('status')
+                ->options([
+                    'Baik' => 'Baik',
+                    'Perlu Diperbaiki' => 'Perlu Diperbaiki',
+                    'Rusak' => 'Rusak',
+                ])
+                ->default('Baik'),
+        ];
     }
 
     public static function table(Table $table): Table

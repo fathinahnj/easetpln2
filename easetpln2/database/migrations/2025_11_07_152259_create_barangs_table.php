@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('barangs', function (Blueprint $table) {
             $table->id();
-            $table->unsignedInteger('no');
+            $table->unsignedInteger('no')->default(1);
             $table->unsignedInteger('no_reg');
             $table->string('nama_barang');
             $table->foreignId('unit')->constrained('ruangans')->onDelete('cascade');
