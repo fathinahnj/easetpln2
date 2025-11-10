@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('ruangans', function (Blueprint $table) {
             $table->id();
-            $table->unsignedInteger('No');
-            $table->string('Unit');
-            $table->string('Ruangan');
+            $table->unsignedInteger('no');
+            $table->string('unit');
+            $table->string('ruangan');
             $table->timestamps();
             $table->softDeletes();
         });

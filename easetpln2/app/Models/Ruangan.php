@@ -16,8 +16,8 @@ class Ruangan extends Model
 
     protected $fillable = [
         // 'No',
-        'Unit',
-        'Ruangan',
+        'unit',
+        'ruangan',
     ];
 
     protected static function boot()

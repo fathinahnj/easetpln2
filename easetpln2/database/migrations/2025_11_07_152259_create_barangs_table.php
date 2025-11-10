@@ -16,7 +16,7 @@ return new class extends Migration
             $table->unsignedInteger('no')->default(1);
             $table->unsignedInteger('no_reg');
             $table->string('nama_barang');
-            $table->foreignId('unit')->constrained('ruangans')->onDelete('cascade');
+            $table->foreignId('unit')->constrained('units')->onDelete('cascade');
             $table->foreignId('ruangan')->constrained('ruangans')->onDelete('cascade');
             $table->enum('status', ['Baik', 'Rusak', 'Perlu Diperbaiki'])->default('Baik');
             $table->enum('progress_aksi', [
