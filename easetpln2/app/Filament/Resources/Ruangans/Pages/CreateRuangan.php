@@ -8,4 +8,6 @@ use Filament\Resources\Pages\CreateRecord;
 class CreateRuangan extends CreateRecord
 {
     protected static string $resource = RuanganResource::class;
+
+    protected static ?string $title = 'Tambah Data Ruangan';
 }
