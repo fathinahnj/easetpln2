@@ -50,13 +50,12 @@ class BarangResource extends Resource
 
                 Select::make('unit')
                     ->label('Unit')
-                    ->options(Ruangan::pluck('unit', 'unit'))
+                    ->options(Ruangan::pluck('unit', 'id'))
                     ->required(),
 
                 Select::make('ruangan_id')
                     ->label('Ruangan')
-                    ->options(Ruangan::pluck('ruangan', 'ruangan'))
-
+                    ->options(Ruangan::pluck('ruangan', 'id'))
                     ->required(),
 
                 Select::make('status')
