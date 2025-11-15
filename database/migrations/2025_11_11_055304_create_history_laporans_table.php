@@ -20,9 +20,6 @@ return new class extends Migration
             $table->string('nama_barang');
             $table->string('unit')->nullable();
             $table->string('ruangan')->nullable();
-
-            $table->string('status');
-            $table->text('progress_aksi')->nullable();
             $table->string('deskripsi')->nullable();
 
             $table->dateTime('tanggal_laporan')->nullable();

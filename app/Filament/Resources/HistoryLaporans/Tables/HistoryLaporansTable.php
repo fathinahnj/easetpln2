@@ -26,12 +26,10 @@ class HistoryLaporansTable
                     ->searchable(),
                 TextColumn::make('ruangan')
                     ->searchable(),
-                TextColumn::make('status')
-                    ->searchable(),
-                TextColumn::make('progress_aksi')
-                    ->searchable(),
+                TextColumn::make('deskripsi')
+                    ->wrap(),
                 TextColumn::make('tanggal_laporan')
-                    ->date()
+                    ->dateTime()
                     ->sortable(),
                 TextColumn::make('created_at')
                     ->dateTime()
