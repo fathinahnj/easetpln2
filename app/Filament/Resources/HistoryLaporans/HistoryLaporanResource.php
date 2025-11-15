@@ -24,10 +24,13 @@ class HistoryLaporanResource extends Resource
 {
     protected static ?string $model = HistoryLaporan::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
-    protected static ?string $navigationLabel = 'History Laporan';
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedClock;
 
-    protected static ?string $recordTitleAttribute = 'History';
+    protected static ?string $recordTitleAttribute = 'History Laporan';
+    protected static ?string $navigationLabel = 'History Laporan';
+    protected static ?string $pluralLabel = 'History Laporan';
+    protected static ?string $modelLabel = 'History Laporan';
+
 
     public static function form(Schema $schema): Schema
     {
