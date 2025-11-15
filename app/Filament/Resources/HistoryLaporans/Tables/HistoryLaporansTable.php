@@ -11,7 +11,7 @@ use Filament\Tables\Table;
 
 class HistoryLaporansTable
 {
-    public static function configure(Table $table): Table
+    public static function table(Table $table): Table
     {
         return $table
             ->columns([

@@ -18,6 +18,7 @@ use Filament\Tables;
 use Filament\Resources\Resource;
 use Filament\Forms\Form;
 use Filament\Schemas\Schema;
+use Filament\Tables\Table;
 
 class HistoryLaporanResource extends Resource
 {
@@ -30,34 +31,12 @@ class HistoryLaporanResource extends Resource
 
     public static function form(Schema $schema): Schema
     {
-        return $schema
-            ->schema([
-                Forms\Components\TextInput::make('no')
-                    ->label('No')
-                    ->disabled()
-                    ->dehydrated(false) // agar tidak dikirim ke database (readonly)
-                    ->default(fn() => \App\Models\Barang::max('no') + 1),
+        return HistoryLaporanForm::configure($schema);
+    }
 
-                // Tambahkan field lainnya di bawah ini
-                Forms\Components\TextInput::make('no_reg')->label('No. Reg'),
-                Forms\Components\TextInput::make('nama_barang')->label('Nama Barang'),
-                Forms\Components\TextInput::make('unit')
-                    ->label('Unit')
-                    ->disabled(),
-
-                Forms\Components\TextInput::make('ruangan')
-                    ->label('Ruangan')
-                    ->disabled(),
-
-                Forms\Components\Select::make('status')
-                    ->label('Status')
-                    ->options([
-                        'Baik' => 'Baik',
-                        'Perlu Diperbaiki' => 'Perlu Diperbaiki',
-                        'Rusak' => 'Rusak',
-                    ]),
-                Forms\Components\Textarea::make('deskripsi')->label('Deskripsi'),
-            ]);
+    public static function table(Table $table): Table
+    {
+        return HistoryLaporansTable::table($table);
     }
 
     public static function infolist(Schema $schema): Schema

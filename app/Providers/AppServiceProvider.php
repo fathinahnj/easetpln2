@@ -21,6 +21,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        \App\Models\Barang::observe(\App\Observers\BarangObserver::class);
+        Barang::observe(BarangObserver::class);
     }
 }

@@ -12,6 +12,8 @@ class BarangObserver
      */
     public function created(Barang $barang): void
     {
+        info('Observer Barang jalan!');
+
         $ruangan = $barang->ruangan;
 
         HistoryLaporan::create([
