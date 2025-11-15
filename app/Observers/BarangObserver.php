@@ -19,8 +19,8 @@ class BarangObserver
         HistoryLaporan::create([
             'no_reg' => $barang->no_reg ?? '-',
             'nama_barang' => $barang->nama_barang,
-            'unit' => $ruangan?->Unit ?? '-',
-            'ruangan' => $ruangan?->Ruangan ?? '-',
+            'unit' => $ruangan?->unit ?? '-',
+            'ruangan' => $ruangan?->ruangan ?? '-',
             'status' => $barang->status ?? '-',
             'progress_aksi' => 'Data barang baru ditambahkan',
             'deskripsi' => "Barang {$barang->nama_barang} berhasil ditambahkan ke sistem.",
@@ -33,14 +33,14 @@ class BarangObserver
      */
     public function updated(Barang $barang): void
     {
-        $ruangan = $barang->ruangan;
+        $ruangan = $barang->ruangan()->first();
 
         HistoryLaporan::create([
             'no' => $barang->id,
             'no_reg' => $barang->no_reg ?? '-',
             'nama_barang' => $barang->nama_barang,
-            'unit' => $ruangan?->Unit ?? '-',
-            'ruangan' => $ruangan?->Ruangan ?? '-',
+            'unit' => $ruangan?->unit ?? '-',
+            'ruangan' => $ruangan?->ruangan ?? '-',
             'status' => $barang->status ?? '-',
             'progress_aksi' => $barang->aksi ?? '-',
             'deskripsi' => "Perubahan data pada Barang {$barang->nama_barang}.",
