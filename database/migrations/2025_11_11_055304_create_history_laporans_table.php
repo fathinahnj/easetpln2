@@ -22,10 +22,10 @@ return new class extends Migration
             $table->string('ruangan')->nullable();
 
             $table->string('status');
-            $table->string('progress_aksi')->nullable();
+            $table->text('progress_aksi')->nullable();
             $table->string('deskripsi')->nullable();
 
-            $table->date('tanggal_laporan')->nullable();
+            $table->dateTime('tanggal_laporan')->nullable();
             $table->timestamps();
         });
     }

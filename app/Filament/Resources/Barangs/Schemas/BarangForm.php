@@ -29,13 +29,6 @@ class BarangForm
                     ->required()
                     ->maxLength(255),
 
-                // Select::make('unit')
-                //     ->label('Unit')
-                //     ->options(Ruangan::pluck('unit', 'unit')->unique())
-                //     ->reactive()
-                //     ->afterStateUpdated(fn(callable $set) => $set('ruangan_id', null))
-                //     ->required(),
-
                 Select::make('unit')
                     ->label('Unit')
                     ->options(Ruangan::pluck('unit', 'unit')->unique())
@@ -61,7 +54,6 @@ class BarangForm
                 Select::make('status')
                     ->options([
                         'Baik' => 'Baik',
-                        'Perlu Diperbaiki' => 'Perlu Diperbaiki',
                         'Rusak' => 'Rusak',
                     ])
                     ->default('Baik')
@@ -72,9 +64,8 @@ class BarangForm
                     ->options(function (callable $get) {
                         $status = $get('status');
                         return match ($status) {
-                            'Baik' => ['Tidak Ada' => 'Tidak Ada'],
-                            'Rusak' => ['Perlu Diganti' => 'Perlu Diganti', 'Dibuang' => 'Dibuang'],
-                            'Perlu Diperbaiki' => ['Belum Ditindak' => 'Belum Ditindak', 'Sementara Diperbaiki' => 'Sementara Diperbaiki'],
+                            'Baik' => ['Aman' => 'Aman'],
+                            'Rusak' => ['Belum Ditindak' => 'Belum Ditindak', 'Sementara Ditindak' => 'Sementara Ditindak', 'Dibuang' => 'Dibuang'],
                         };
                     })
                     ->required()

@@ -19,14 +19,13 @@ return new class extends Migration
             $table->foreignId('ruangan_id')->constrained('ruangans')->onDelete('cascade');
             // $table->foreignId('unit')->constrained('ruangans')->onDelete('cascade');
             // $table->foreignId('ruangan')->constrained('ruangans')->onDelete('cascade');
-            $table->enum('status', ['Baik', 'Rusak', 'Perlu Diperbaiki'])->default('Baik');
+            $table->enum('status', ['Baik', 'Rusak'])->default('Baik');
             $table->enum('progress_aksi', [
-                'Tidak Ada',
-                'Perlu Diganti',
-                'Dibuang',
+                'Aman',
                 'Belum Ditindak',
-                'Sementara Diperbaiki'
-            ])->default('Tidak Ada');
+                'Sementara Ditindak',
+                'Dibuang'
+            ])->default('Aman');
             $table->string('deskripsi')->nullable();
             $table->enum('urgensi', ['Tinggi', 'Sedang', 'Rendah'])->default('Rendah');
             $table->timestamps();
