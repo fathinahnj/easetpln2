@@ -34,7 +34,7 @@ class RuanganResource extends Resource
 
     public static function table(Table $table): Table
     {
-        return RuangansTable::configure($table);
+        return RuangansTable::table($table);
     }
 
     public static function getRelations(): array

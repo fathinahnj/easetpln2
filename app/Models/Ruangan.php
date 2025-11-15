@@ -15,7 +15,7 @@ class Ruangan extends Model
     }
 
     protected $fillable = [
-        // 'No',
+        'no',
         'unit',
         'ruangan',
     ];

@@ -2,6 +2,8 @@
 
 namespace App\Filament\Resources\Ruangans\Tables;
 
+use App\Models\Ruangan;
+use Filament\Tables;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
@@ -11,20 +13,22 @@ use Filament\Tables\Table;
 
 class RuangansTable
 {
-    public static function configure(Table $table): Table
+    public static function table(Table $table): Table
     {
         return $table
             ->columns([
-                TextColumn::make('No')
+                TextColumn::make('no')
                     ->numeric()
                     ->label('No.')
                     ->rowIndex()
                     ->sortable(),
-                TextColumn::make('Unit')
+                TextColumn::make('unit')
                     ->label('Unit')
+                    ->sortable()
                     ->searchable(),
-                TextColumn::make('Ruangan')
+                TextColumn::make('ruangan')
                     ->label('Ruangan')
+                    ->sortable()
                     ->searchable(),
                 TextColumn::make('created_at')
                     ->dateTime()
