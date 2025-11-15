@@ -12,8 +12,8 @@ class BarangObserver
      */
     public function created(Barang $barang): void
     {
-        // Pastikan hanya jalan sekali untuk create baru
-        if ($barang->wasRecentlyCreated === false) {
+        // Pastikan hanya berjalan sekali saat create baru
+        if (!$barang->wasRecentlyCreated) {
             return;
         }
 
@@ -36,24 +36,26 @@ class BarangObserver
      */
     public function updated(Barang $barang): void
     {
-        $ruangan = $barang->ruangan()->first();
+        $ruangan = $barang->ruangan;
 
-        HistoryLaporan::update([
-            'no' => $barang->id,
-            'no_reg' => $barang->no_reg ?? '-',
-            'nama_barang' => $barang->nama_barang,
-            'unit' => $ruangan?->unit ?? '-',
-            'ruangan' => $ruangan?->ruangan ?? '-',
-            'status' => $barang->status,
-            'progress_aksi' => $barang->progress_aksi,
-            'deskripsi' => "Perubahan data pada barang {$barang->nama_barang} di {$ruangan?->unit} {$ruangan?->ruangan}.",
-            'tanggal_laporan' => now(),
-        ]);
+        // Deteksi perubahan status
+        if ($barang->isDirty('status')) {
+            $statusLama = $barang->getOriginal('status');
+            $statusBaru = $barang->status;
+
+            HistoryLaporan::create([
+                'no_reg' => $barang->no_reg ?? '-',
+                'nama_barang' => $barang->nama_barang ?? '-',
+                'unit' => $ruangan?->unit ?? '-',
+                'ruangan' => $ruangan?->ruangan ?? '-',
+                'status' => $statusBaru,
+                'progress_aksi' => 'Status barang diperbarui',
+                'deskripsi' => "Status barang {$barang->nama_barang} berubah dari '{$statusLama}' menjadi '{$statusBaru}'.",
+                'tanggal_laporan' => now(),
+            ]);
+        }
     }
 
-    /**
-     * Handle the Barang "deleted" event.
-     */
     public function deleted(Barang $barang): void
     {
         //
