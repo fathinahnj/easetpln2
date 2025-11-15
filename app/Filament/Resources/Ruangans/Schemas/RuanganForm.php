@@ -11,13 +11,20 @@ class RuanganForm
     {
         return $schema
             ->components([
-                TextInput::make('no')
-                    ->required()
-                    ->numeric(),
+                TextInput::make('No')
+                    ->disabled()
+                    ->dehydrated(false)
+                    ->default(fn() => \App\Models\Ruangan::max('No') + 1),
+
                 TextInput::make('unit')
-                    ->required(),
+                    ->label('Unit')
+                    ->required()
+                    ->maxLength(255),
+
                 TextInput::make('ruangan')
-                    ->required(),
+                    ->label('Ruangan')
+                    ->required()
+                    ->maxLength(255),
             ]);
     }
 }

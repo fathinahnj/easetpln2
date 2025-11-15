@@ -29,24 +29,7 @@ class RuanganResource extends Resource
 
     public static function form(Schema $schema): Schema
     {
-        return $schema
-            ->schema([
-                Forms\Components\TextInput::make('No')
-                    ->disabled()
-                    ->dehydrated(false)
-                    ->default(fn() => \App\Models\Ruangan::max('No') + 1),
-
-                Forms\Components\TextInput::make('unit')
-                    ->label('Unit')
-                    ->required()
-                    ->maxLength(255),
-
-                Forms\Components\TextInput::make('ruangan')
-                    ->label('Ruangan')
-                    ->required()
-                    ->maxLength(255),
-            ]);
-        // return RuanganForm::configure($schema);
+        return RuanganForm::configure($schema);
     }
 
     public static function table(Table $table): Table
