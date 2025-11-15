@@ -23,6 +23,8 @@ class HistoryLaporan extends Model
         'nama_barang',
         'unit',
         'ruangan',
+        'status',
+        'progress_aksi',
         'deskripsi',
         'tanggal_laporan',
     ];

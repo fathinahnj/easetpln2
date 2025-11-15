@@ -12,7 +12,10 @@ class BarangObserver
      */
     public function created(Barang $barang): void
     {
-        info('Observer Barang jalan!');
+        // Pastikan hanya jalan sekali untuk create baru
+        if ($barang->wasRecentlyCreated === false) {
+            return;
+        }
 
         $ruangan = $barang->ruangan;
 
@@ -21,7 +24,9 @@ class BarangObserver
             'nama_barang' => $barang->nama_barang,
             'unit' => $ruangan?->unit ?? '-',
             'ruangan' => $ruangan?->ruangan ?? '-',
-            'deskripsi' => "Barang {$barang->nama_barang} berhasil ditambahkan ke sistem.",
+            'status' => $barang->status,
+            'progress_aksi' => $barang->progress_aksi,
+            'deskripsi' => "Barang {$barang->nama_barang} di di {$ruangan?->unit} {$ruangan?->ruangan} berhasil ditambahkan ke sistem.",
             'tanggal_laporan' => now(),
         ]);
     }
@@ -39,6 +44,8 @@ class BarangObserver
             'nama_barang' => $barang->nama_barang,
             'unit' => $ruangan?->unit ?? '-',
             'ruangan' => $ruangan?->ruangan ?? '-',
+            'status' => $barang->status,
+            'progress_aksi' => $barang->progress_aksi,
             'deskripsi' => "Perubahan data pada barang {$barang->nama_barang} di {$ruangan?->unit} {$ruangan?->ruangan}.",
             'tanggal_laporan' => now(),
         ]);

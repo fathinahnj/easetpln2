@@ -11,20 +11,13 @@ class HistoryLaporanInfolist
     {
         return $schema
             ->components([
-                TextEntry::make('no')
-                    ->numeric(),
-                TextEntry::make('no_reg'),
-                TextEntry::make('nama_barang'),
-                TextEntry::make('unit'),
-                TextEntry::make('ruangan'),
-                TextEntry::make('status'),
-                TextEntry::make('progress_aksi'),
-                TextEntry::make('tanggal_laporan')
-                    ->date(),
-                TextEntry::make('created_at')
-                    ->dateTime(),
-                TextEntry::make('updated_at')
-                    ->dateTime(),
+                TextEntry::make('status')
+                    ->label('Status'),
+
+                TextEntry::make('progress_aksi')
+                    ->label('Progress Aksi')
+                    ->columnSpanFull(), // biar teks panjang bisa lebar penuh
+
             ]);
     }
 }
