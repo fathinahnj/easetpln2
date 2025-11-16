@@ -7,6 +7,7 @@ use App\Models\Ruangan;
 use Filament\Forms\Components\Select;
 use Filament\Widgets\PieChartWidget;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 class BarangStatusChart extends PieChartWidget
 {
@@ -55,6 +56,18 @@ class BarangStatusChart extends PieChartWidget
     // Data chart berdasarkan filter di atas
     protected function getData(): array
     {
+        $user = Auth::user();
+
+        // Ambil semua barang + relasi ruangan
+        $query = Barang::with('ruangan');
+
+        // Kalau bukan Admin Utama, filter unit berdasarkan relasi ruangan
+        if ($user->role !== 'Admin Utama') {
+            $query->whereHas('ruangan', function ($q) use ($user) {
+                $q->where('unit', $user->unit);
+            });
+        }
+
         $filterUnit = $this->filter ?? 'all';
 
         $query = DB::table('barangs')

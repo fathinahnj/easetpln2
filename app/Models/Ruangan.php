@@ -14,6 +14,11 @@ class Ruangan extends Model
         return $this->hasMany(Barang::class, 'ruangan_id');
     }
 
+    public function ruangan()
+    {
+        return $this->belongsTo(Ruangan::class, 'ruangan_id');
+    }
+
     protected $fillable = [
         'no',
         'unit',

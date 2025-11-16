@@ -15,9 +15,16 @@ use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Illuminate\Support\Facades\Auth;
 
 class RuanganResource extends Resource
 {
+    public static function canViewAny(): bool
+    {
+        $user = Auth::user();
+        return $user?->role === 'Admin Utama';
+    }
+
     protected static ?string $model = Ruangan::class;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedBuildingOffice;
