@@ -15,19 +15,31 @@ class StatsOverview extends BaseWidget
     protected function getStats(): array
     {
         $user = Auth::user();
-        $totalBarang = Barang::whereHas('ruangan', function ($query) use ($user) {
-            $query->where('unit', $user->unit);
-        })->count();
+        $stats = [];
 
-        return [
-            Stat::make('Total User', User::count())
-                ->description('Jumlah seluruh user yang terdaftar'),
+        // 🔹 Jika Admin Utama → tampilkan semua
+        if ($user->role === 'Admin Utama') {
+            $stats[] = Stat::make('Total User', User::count())
+                ->description('Jumlah seluruh user yang terdaftar')
+                ->color('primary');
 
-            Stat::make('Total Unit', Ruangan::count())
-                ->description('Jumlah total kantor/unit'),
+            $stats[] = Stat::make(
+                'Total Unit',
+                Ruangan::select('unit')->distinct()->count('unit')
+            )
+                ->description('Jumlah total kantor/unit')
+                ->color('success');
+        }
 
-            Stat::make('Total Barang', $totalBarang)
-                ->description('Jumlah barang tercatat'),
-        ];
+        // 🔹 Total Barang — selalu ditampilkan untuk semua role
+        $totalBarang = Barang::when(
+            $user->role !== 'Admin Utama',
+            fn($query) => $query->whereHas('ruangan', fn($q) => $q->where('unit', $user->unit))
+        )->count();
+
+        $stats[] = Stat::make('Total Barang', $totalBarang)
+            ->description('Jumlah barang tercatat');
+
+        return $stats;
     }
 }
