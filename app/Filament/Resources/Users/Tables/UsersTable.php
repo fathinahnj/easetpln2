@@ -16,16 +16,10 @@ class UsersTable
         return $table
             ->columns([
                 TextColumn::make('name')
-                    ->searchable()
-                    ->toggledHiddenByDefault(true),
-                TextColumn::make('nama_lengkap')
                     ->searchable(),
                 TextColumn::make('email')
                     ->label('E-mail')
                     ->searchable(),
-                TextColumn::make('email_verified_at')
-                    ->dateTime()
-                    ->sortable(),
                 TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
