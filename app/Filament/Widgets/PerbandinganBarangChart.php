@@ -16,7 +16,7 @@ class PerbandinganBarangChart extends ChartWidget
         $data = DB::table('history_laporans')
             ->selectRaw("
                 CONCAT(MONTHNAME(tanggal_laporan), ' ', YEAR(tanggal_laporan)) as periode,
-                SUM(CASE WHEN status = 'Perlu Diperbaiki' THEN 1 ELSE 0 END) as perlu_diperbaiki,
+                SUM(CASE WHEN status = 'Baik' THEN 1 ELSE 0 END) as baik,
                 SUM(CASE WHEN status = 'Rusak' THEN 1 ELSE 0 END) as rusak
             ")
             ->groupBy('periode')
@@ -26,8 +26,8 @@ class PerbandinganBarangChart extends ChartWidget
         return [
             'datasets' => [
                 [
-                    'label' => 'Perlu Diperbaiki',
-                    'data' => $data->pluck('perlu_diperbaiki'),
+                    'label' => 'Baik',
+                    'data' => $data->pluck('baik'),
                     'backgroundColor' => '#5B8FF9', // biru
                 ],
                 [
