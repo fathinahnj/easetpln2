@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Users\Schemas;
 
+use Dom\Text;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Schema;
@@ -29,6 +30,9 @@ class UserForm
                         'Admin Utama' => 'Admin Utama',
                         'Admin Unit' => 'Admin Unit',
                     ])->required(),
+                TextInput::make('unit')
+                    ->label('Unit')
+                    ->required(),
                 TextInput::make('whatsapp')
                     ->label('Nomor WhatsApp (format: wa.me/62...)')
                     ->required(),

@@ -30,6 +30,9 @@ class UsersTable
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('role')
                     ->searchable(),
+                TextColumn::make('unit')
+                    ->label('Unit')
+                    ->searchable(),
                 TextColumn::make('whatsapp')
                     ->label('Nomor WhatsApp')
                     ->searchable(),
