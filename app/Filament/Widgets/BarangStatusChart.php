@@ -6,11 +6,30 @@ use App\Models\Barang;
 use App\Models\Ruangan;
 use Filament\Forms\Components\Select;
 use Filament\Widgets\PieChartWidget;
+use Illuminate\Support\Facades\DB;
 
 class BarangStatusChart extends PieChartWidget
 {
     protected ?string $heading = 'Grafik Status Barang Saat Ini';
     protected ?string $maxHeight = '265px';   // tinggi chart
+
+    // 🔹 1. Tambahkan filter unit dari tabel ruangans
+    protected function getFilters(): ?array
+    {
+        $units = DB::table('ruangans')
+            ->select('unit')
+            ->distinct()
+            ->orderBy('unit')
+            ->pluck('unit')
+            ->toArray();
+
+        $filters = ['all' => 'Semua Unit'];
+        foreach ($units as $unit) {
+            $filters[$unit] = $unit;
+        }
+
+        return $filters;
+    }
 
     // Untuk menampilkan filter Unit & Ruangan di atas chart
     protected function getFormSchema(): array
@@ -36,42 +55,29 @@ class BarangStatusChart extends PieChartWidget
     // Data chart berdasarkan filter di atas
     protected function getData(): array
     {
+        $filterUnit = $this->filter ?? 'all';
 
-        // $data = Barang::query()
-        //     ->selectRaw('status, COUNT(*) as total')
-        //     ->groupBy('status')
-        //     ->pluck('total', 'status');   // ['Baik' => 10, 'Rusak' => 3, ...]
+        $query = DB::table('barangs')
+            ->join('ruangans', 'barangs.ruangan_id', '=', 'ruangans.id')
+            ->selectRaw("
+                SUM(CASE WHEN LOWER(barangs.status) = 'baik' THEN 1 ELSE 0 END) as baik,
+                SUM(CASE WHEN LOWER(barangs.status) = 'rusak' THEN 1 ELSE 0 END) as rusak
+            ");
 
-        // return [
-        //     'labels' => $data->keys()->toArray(),   // ['Baik', 'Rusak', ...]
-        //     'datasets' => [
-        //         [
-        //             'label' => 'Jumlah Barang',
-        //             'data'  => $data->values()->toArray(), // [10, 3, ...]
-        //         ],
-        //     ],
-        // ];
-        $filters = $this->filterFormData ?? [];
-
-        $query = Barang::query();
-
-        if (!empty($filters['unit_id'])) {
-            $query->where('unit_id', $filters['unit_id']);
+        if ($filterUnit !== 'all') {
+            $query->where('ruangans.unit', $filterUnit);
         }
 
-        if (!empty($filters['ruangan_id'])) {
-            $query->where('ruangan_id', $filters['ruangan_id']);
-        }
-
-        $baik = (clone $query)->where('status', 'Baik')->count();
-        $rusak = (clone $query)->where('status', 'Rusak')->count();
+        $data = $query->first();
 
         return [
             'datasets' => [
                 [
-                    'label' => 'Status Barang',
-                    'data' => [$baik, $rusak],
-                    'backgroundColor' => ['#2ecc71', '#e74c3c'],
+                    'data' => [
+                        $data->baik ?? 0,
+                        $data->rusak ?? 0,
+                    ],
+                    'backgroundColor' => ['#5AD8A6', '#F4664A'],
                 ],
             ],
             'labels' => ['Baik', 'Rusak'],
