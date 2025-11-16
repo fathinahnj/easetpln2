@@ -10,7 +10,7 @@ use Filament\Widgets\PieChartWidget;
 class BarangStatusChart extends PieChartWidget
 {
     protected ?string $heading = 'Grafik Status Barang Saat Ini';
-    protected ?string $maxHeight = '250px';   // tinggi chart
+    protected ?string $maxHeight = '265px';   // tinggi chart
 
     // Untuk menampilkan filter Unit & Ruangan di atas chart
     protected function getFormSchema(): array
