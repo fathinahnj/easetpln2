@@ -3,73 +3,20 @@
 namespace App\Filament\Widgets;
 
 use App\Models\Barang;
-use App\Models\Ruangan;
-use Filament\Forms\Components\Select;
-use Filament\Widgets\PieChartWidget;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Filament\Widgets\ChartWidget;
 
-class BarangStatusChart extends PieChartWidget
+class BarangStatusChart extends ChartWidget
 {
     protected ?string $heading = 'Grafik Status Barang Saat Ini';
-    protected ?string $maxHeight = '265px';   // tinggi chart
+    protected ?string $maxHeight = '265px';
 
-    // 🔹 1. Tambahkan filter unit dari tabel ruangans
-    protected function getFilters(): ?array
-    {
-        $units = DB::table('ruangans')
-            ->select('unit')
-            ->distinct()
-            ->orderBy('unit')
-            ->pluck('unit')
-            ->toArray();
-
-        $filters = ['all' => 'Semua Unit'];
-        foreach ($units as $unit) {
-            $filters[$unit] = $unit;
-        }
-
-        return $filters;
-    }
-
-    // Untuk menampilkan filter Unit & Ruangan di atas chart
-    protected function getFormSchema(): array
-    {
-        return [
-            Select::make('unit_id')
-                ->label('Unit')
-                ->options(Ruangan::all()->pluck('unit', 'id'))
-                ->reactive()
-                ->afterStateUpdated(fn(callable $set) => $set('ruangan_id', null)),
-
-            Select::make('ruangan_id')
-                ->label('Ruangan')
-                ->options(function (callable $get) {
-                    $unitId = $get('unit_id');
-                    if (!$unitId) return [];
-                    return Ruangan::where('unit_id', $unitId)->pluck('nama', 'id');
-                })
-                ->reactive(),
-        ];
-    }
-
-    // Data chart berdasarkan filter di atas
     protected function getData(): array
     {
         $user = Auth::user();
 
-        // Ambil semua barang + relasi ruangan
-        $query = Barang::with('ruangan');
-
-        // Kalau bukan Admin Utama, filter unit berdasarkan relasi ruangan
-        if ($user->role !== 'Admin Utama') {
-            $query->whereHas('ruangan', function ($q) use ($user) {
-                $q->where('unit', $user->unit);
-            });
-        }
-
-        $filterUnit = $this->filter ?? 'all';
-
+        // Base query: join ke tabel ruangans
         $query = DB::table('barangs')
             ->join('ruangans', 'barangs.ruangan_id', '=', 'ruangans.id')
             ->selectRaw("
@@ -77,8 +24,9 @@ class BarangStatusChart extends PieChartWidget
                 SUM(CASE WHEN LOWER(barangs.status) = 'rusak' THEN 1 ELSE 0 END) as rusak
             ");
 
-        if ($filterUnit !== 'all') {
-            $query->where('ruangans.unit', $filterUnit);
+        // 🔹 Filter otomatis berdasarkan role
+        if ($user->role !== 'Admin Utama') {
+            $query->where('ruangans.unit', $user->unit);
         }
 
         $data = $query->first();
@@ -86,11 +34,12 @@ class BarangStatusChart extends PieChartWidget
         return [
             'datasets' => [
                 [
+                    'label' => 'Status Barang',
                     'data' => [
                         $data->baik ?? 0,
                         $data->rusak ?? 0,
                     ],
-                    'backgroundColor' => ['#5AD8A6', '#F4664A'],
+                    'backgroundColor' => ['#34D399', '#F87171'],
                 ],
             ],
             'labels' => ['Baik', 'Rusak'],
