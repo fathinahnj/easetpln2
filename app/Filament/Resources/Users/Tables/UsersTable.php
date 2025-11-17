@@ -15,6 +15,10 @@ class UsersTable
     {
         return $table
             ->columns([
+                TextColumn::make('No')
+                    ->rowIndex()
+                    ->label('No')
+                    ->alignCenter(),
                 TextColumn::make('name')
                     ->searchable(),
                 TextColumn::make('email')
