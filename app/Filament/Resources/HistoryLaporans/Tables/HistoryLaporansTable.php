@@ -14,11 +14,8 @@ class HistoryLaporansTable
     public static function table(Table $table): Table
     {
         return $table
+            ->defaultSort('created_at', 'desc')
             ->columns([
-                TextColumn::make('No')
-                    ->rowIndex()
-                    ->label('No')
-                    ->alignCenter(),
                 TextColumn::make('no_reg')
                     ->searchable(),
                 TextColumn::make('nama_barang')
