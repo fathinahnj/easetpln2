@@ -19,6 +19,8 @@ use Filament\Resources\Resource;
 use Filament\Forms\Form;
 use Filament\Schemas\Schema;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Auth;
 
 class HistoryLaporanResource extends Resource
 {
@@ -62,5 +64,16 @@ class HistoryLaporanResource extends Resource
             'view' => ViewHistoryLaporan::route('/{record}'),
             'edit' => EditHistoryLaporan::route('/{record}/edit'),
         ];
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        $query = parent::getEloquentQuery();
+
+        if (Auth::user()->role !== 'Admin Utama') {
+            $query->where('unit', Auth::user()->unit);
+        }
+
+        return $query;
     }
 }

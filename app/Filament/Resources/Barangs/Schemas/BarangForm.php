@@ -59,19 +59,34 @@ class BarangForm
                         'Rusak' => 'Rusak',
                     ])
                     ->default('Baik')
-                    ->reactive(),
+                    ->reactive()
+                    ->afterStateUpdated(fn(callable $set) => $set('progress_aksi', null)),
 
                 Select::make('progress_aksi')
                     ->label('Progress Aksi')
                     ->options(function (callable $get) {
                         $status = $get('status');
+
                         return match ($status) {
-                            'Baik' => ['Aman' => 'Aman'],
-                            'Rusak' => ['Belum Ditindak' => 'Belum Ditindak', 'Sementara Ditindak' => 'Sementara Ditindak', 'Dibuang' => 'Dibuang'],
+                            'Baik' => [
+                                'Aman' => 'Aman',
+                            ],
+                            'Rusak' => [
+                                'Belum Ditindak' => 'Belum Ditindak',
+                                'Sementara Ditindak' => 'Sementara Ditindak',
+                                'Dibuang' => 'Dibuang',
+                            ],
+                            default => [
+                                'Aman' => 'Aman',
+                                'Belum Ditindak' => 'Belum Ditindak',
+                                'Sementara Ditindak' => 'Sementara Ditindak',
+                                'Dibuang' => 'Dibuang',
+                            ],
                         };
                     })
                     ->required()
-                    ->default('Tidak Ada'),
+                    ->preload()
+                    ->reactive(),
 
                 TextInput::make('deskripsi')
                     ->maxLength(65535),

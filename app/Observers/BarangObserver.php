@@ -41,7 +41,7 @@ class BarangObserver
                 'unit' => $ruangan?->unit ?? '-',
                 'ruangan' => $ruangan?->ruangan ?? '-',
                 'status' => $statusBaru,
-                'progress_aksi' => 'Status barang diperbarui',
+                'progress_aksi' => $barang->progress_aksi,
                 'deskripsi' => "Status barang {$barang->nama_barang} berubah dari '{$statusLama}' menjadi '{$statusBaru}'.",
                 'tanggal_laporan' => now(),
             ]);

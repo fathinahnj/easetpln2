@@ -17,6 +17,11 @@ class HistoryLaporan extends Model
         return $this->belongsTo(Barang::class, 'no_reg', 'no_reg');
     }
 
+    public function ruangan()
+    {
+        return $this->belongsTo(Ruangan::class);
+    }
+
 
     protected $fillable = [
         'no_reg',
