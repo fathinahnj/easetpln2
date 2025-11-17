@@ -13,8 +13,6 @@ class HistoryLaporanForm
     {
         return $schema
             ->components([
-                TextInput::make('no')
-                    ->numeric(),
                 TextInput::make('no_reg'),
                 TextInput::make('nama_barang')
                     ->required(),

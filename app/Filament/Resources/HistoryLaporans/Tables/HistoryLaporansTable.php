@@ -15,9 +15,10 @@ class HistoryLaporansTable
     {
         return $table
             ->columns([
-                TextColumn::make('no')
-                    ->numeric()
-                    ->sortable(),
+                TextColumn::make('No')
+                    ->rowIndex()
+                    ->label('No')
+                    ->alignCenter(),
                 TextColumn::make('no_reg')
                     ->searchable(),
                 TextColumn::make('nama_barang')

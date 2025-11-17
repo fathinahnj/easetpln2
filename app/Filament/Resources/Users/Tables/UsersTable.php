@@ -35,7 +35,16 @@ class UsersTable
                     ->searchable(),
                 TextColumn::make('whatsapp')
                     ->label('Nomor WhatsApp')
-                    ->searchable(),
+                    ->formatStateUsing(fn($state) => "
+                        <a href='https://wa.me/{$state}'
+                        target='_blank'
+                        style='color:#25D366; font-weight:600; text-decoration:none; display:flex; align-items:center; gap:6px;'>
+                            <img src='https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg'
+                                width='16' height='16' alt='WA'>
+                            {$state}
+                        </a>
+    ")
+                    ->html(),
             ])
             ->filters([
                 //

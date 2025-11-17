@@ -19,7 +19,6 @@ class HistoryLaporan extends Model
 
 
     protected $fillable = [
-        'no',
         'no_reg',
         'nama_barang',
         'unit',

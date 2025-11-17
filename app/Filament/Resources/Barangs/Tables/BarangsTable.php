@@ -25,10 +25,10 @@ class BarangsTable
                 )
             )
             ->columns([
-                TextColumn::make('no')
-                    ->numeric()
-                    ->label('No.')
-                    ->sortable(),
+                TextColumn::make('No')
+                    ->rowIndex()
+                    ->label('No')
+                    ->alignCenter(),
                 TextColumn::make('no_reg')
                     ->label('No. Reg'),
                 TextColumn::make('nama_barang')

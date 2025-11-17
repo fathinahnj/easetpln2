@@ -16,39 +16,42 @@ class BarangForm
     {
         return $schema
             ->schema([
-                TextInput::make('no')
-                    ->disabled()
-                    ->dehydrated(false)
-                    ->default(fn() => Barang::max('no') + 1),
-
                 TextInput::make('no_reg')
-                    ->required()
-                    ->numeric(),
+                    ->label('No. Reg')
+                    ->numeric()
+                    ->required(),
 
                 TextInput::make('nama_barang')
                     ->label('Nama Barang')
                     ->required()
                     ->maxLength(255),
 
-                TextInput::make('unit')
+                Select::make('unit')
                     ->label('Unit')
+                    ->options(\App\Models\Ruangan::query()
+                        ->select('unit')
+                        ->distinct()
+                        ->pluck('unit', 'unit'))
                     ->default(fn($record) => $record?->ruangan?->unit ?? Auth::user()->unit)
-                    ->disabled() // hanya tampilkan, tidak bisa diubah
-                    ->dehydrated(false),
+                    ->disabled(fn() => Auth::user()->role === 'Admin Unit') // jika admin unit, dikunci
+                    ->reactive() // penting agar field Ruangan ikut berubah
+                    ->required(),
 
                 // 🔹 Ruangan hanya menampilkan ruangan dari unit tersebut
                 Select::make('ruangan_id')
                     ->label('Ruangan')
-                    ->options(function () {
-                        $user = Auth::user();
-                        if ($user->role === 'Admin Utama') {
-                            return Ruangan::pluck('ruangan', 'id');
+                    ->options(function (callable $get) {
+                        $unit = $get('unit');
+                        if (!$unit) {
+                            return \App\Models\Ruangan::pluck('ruangan', 'id');
                         }
-                        // Admin Unit hanya lihat ruangan milik unit-nya
-                        return Ruangan::where('unit', $user->unit)->pluck('ruangan', 'id');
+
+                        return \App\Models\Ruangan::where('unit', $unit)
+                            ->pluck('ruangan', 'id');
                     })
                     ->searchable()
-                    ->required(),
+                    ->required()
+                    ->reactive(), // agar update setiap unit berubah
 
                 Select::make('status')
                     ->options([

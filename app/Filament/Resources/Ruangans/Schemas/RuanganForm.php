@@ -11,11 +11,6 @@ class RuanganForm
     {
         return $schema
             ->components([
-                TextInput::make('No')
-                    ->disabled()
-                    ->dehydrated(false)
-                    ->default(fn() => \App\Models\Ruangan::max('No') + 1),
-
                 TextInput::make('unit')
                     ->label('Unit')
                     ->required()

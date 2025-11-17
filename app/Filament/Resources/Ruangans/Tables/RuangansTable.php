@@ -17,11 +17,10 @@ class RuangansTable
     {
         return $table
             ->columns([
-                TextColumn::make('no')
-                    ->numeric()
-                    ->label('No.')
+                TextColumn::make('No')
                     ->rowIndex()
-                    ->sortable(),
+                    ->label('No.')
+                    ->alignCenter(),
                 TextColumn::make('unit')
                     ->label('Unit')
                     ->sortable()
