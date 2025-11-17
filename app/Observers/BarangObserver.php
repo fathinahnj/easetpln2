@@ -7,16 +7,8 @@ use App\Models\HistoryLaporan;
 
 class BarangObserver
 {
-    /**
-     * Handle the Barang "created" event.
-     */
     public function created(Barang $barang): void
     {
-        // Pastikan hanya berjalan sekali saat create baru
-        if (!$barang->wasRecentlyCreated) {
-            return;
-        }
-
         $ruangan = $barang->ruangan;
 
         HistoryLaporan::create([
@@ -26,22 +18,22 @@ class BarangObserver
             'ruangan' => $ruangan?->ruangan ?? '-',
             'status' => $barang->status,
             'progress_aksi' => $barang->progress_aksi,
-            'deskripsi' => "Barang {$barang->nama_barang} di di {$ruangan?->unit} {$ruangan?->ruangan} berhasil ditambahkan ke sistem.",
+            'deskripsi' => "Barang {$barang->nama_barang} di {$ruangan?->unit} {$ruangan?->ruangan} berhasil ditambahkan ke sistem.",
             'tanggal_laporan' => now(),
         ]);
     }
 
     /**
-     * Handle the Barang "updated" event.
+     * Handle only when Barang is updated (not created)
      */
-    public function updated(Barang $barang): void
+    public function updating(Barang $barang): void
     {
-        $ruangan = $barang->ruangan;
-
-        // Deteksi perubahan status
+        // Hanya jalan kalau memang ada perubahan status
         if ($barang->isDirty('status')) {
             $statusLama = $barang->getOriginal('status');
             $statusBaru = $barang->status;
+
+            $ruangan = $barang->ruangan;
 
             HistoryLaporan::create([
                 'no_reg' => $barang->no_reg ?? '-',
@@ -54,26 +46,5 @@ class BarangObserver
                 'tanggal_laporan' => now(),
             ]);
         }
-    }
-
-    public function deleted(Barang $barang): void
-    {
-        //
-    }
-
-    /**
-     * Handle the Barang "restored" event.
-     */
-    public function restored(Barang $barang): void
-    {
-        //
-    }
-
-    /**
-     * Handle the Barang "force deleted" event.
-     */
-    public function forceDeleted(Barang $barang): void
-    {
-        //
     }
 }

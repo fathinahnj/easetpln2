@@ -34,19 +34,19 @@ class Barang extends Model
         });
     }
 
-    protected static function booted()
-    {
-        static::created(function ($barang) {
-            \App\Models\HistoryLaporan::create([
-                'no_reg' => $barang->no_reg,
-                'nama_barang' => $barang->nama_barang,
-                'unit' => $barang->unit,
-                'ruangan' => $barang->ruangan,
-                'status' => $barang->status,
-                'progress_aksi' => $barang->progress_aksi,
-                'deskripsi' => $barang->deskripsi,
-                'tanggal_laporan' => now(),
-            ]);
-        });
-    }
+    // protected static function booted()
+    // {
+    //     static::created(function ($barang) {
+    //         \App\Models\HistoryLaporan::create([
+    //             'no_reg' => $barang->no_reg,
+    //             'nama_barang' => $barang->nama_barang,
+    //             'unit' => $barang->unit,
+    //             'ruangan' => $barang->ruangan,
+    //             'status' => $barang->status,
+    //             'progress_aksi' => $barang->progress_aksi,
+    //             'deskripsi' => $barang->deskripsi,
+    //             'tanggal_laporan' => now(),
+    //         ]);
+    //     });
+    // }
 }

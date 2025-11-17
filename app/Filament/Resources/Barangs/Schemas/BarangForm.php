@@ -5,6 +5,7 @@ namespace App\Filament\Resources\Barangs\Schemas;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Schema;
+use Illuminate\Support\Facades\Auth;
 
 use App\Models\Ruangan;
 use App\Models\Barang;
@@ -29,27 +30,25 @@ class BarangForm
                     ->required()
                     ->maxLength(255),
 
-                Select::make('unit')
+                TextInput::make('unit')
                     ->label('Unit')
-                    ->options(Ruangan::pluck('unit', 'unit')->unique())
-                    ->reactive()
-                    ->afterStateUpdated(fn(callable $set) => $set('ruangan_id', null))
-                    ->dehydrated(false) // ← penting: jangan simpan ke database
-                    ->required(),
+                    ->default(fn($record) => $record?->ruangan?->unit ?? Auth::user()->unit)
+                    ->disabled() // hanya tampilkan, tidak bisa diubah
+                    ->dehydrated(false),
 
+                // 🔹 Ruangan hanya menampilkan ruangan dari unit tersebut
                 Select::make('ruangan_id')
                     ->label('Ruangan')
-                    ->options(function (callable $get) {
-                        $unit = $get('unit');
-                        if (!$unit) {
-                            return [];
+                    ->options(function () {
+                        $user = Auth::user();
+                        if ($user->role === 'Admin Utama') {
+                            return Ruangan::pluck('ruangan', 'id');
                         }
-                        return Ruangan::where('unit', $unit)
-                            ->pluck('ruangan', 'id');
+                        // Admin Unit hanya lihat ruangan milik unit-nya
+                        return Ruangan::where('unit', $user->unit)->pluck('ruangan', 'id');
                     })
-                    ->reactive()
-                    ->required()
-                    ->searchable(),
+                    ->searchable()
+                    ->required(),
 
                 Select::make('status')
                     ->options([
