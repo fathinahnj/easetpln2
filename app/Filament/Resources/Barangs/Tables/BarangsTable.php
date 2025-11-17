@@ -8,12 +8,22 @@ use Filament\Actions\EditAction;
 use Filament\Actions\DeleteAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Illuminate\Support\Facades\Auth;
+use App\Models\Barang;
 
 class BarangsTable
 {
     public static function configure(Table $table): Table
     {
+        $user = Auth::user();
+
         return $table
+            ->query(
+                Barang::query()->when(
+                    $user->role !== 'Admin Utama',
+                    fn($query) => $query->whereHas('ruangan', fn($q) => $q->where('unit', $user->unit))
+                )
+            )
             ->columns([
                 TextColumn::make('no')
                     ->numeric()

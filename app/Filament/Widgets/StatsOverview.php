@@ -17,21 +17,17 @@ class StatsOverview extends BaseWidget
         $user = Auth::user();
         $stats = [];
 
-        // 🔹 Jika Admin Utama → tampilkan semua
         if ($user->role === 'Admin Utama') {
             $stats[] = Stat::make('Total User', User::count())
-                ->description('Jumlah seluruh user yang terdaftar')
-                ->color('primary');
+                ->description('Jumlah seluruh user yang terdaftar');
 
             $stats[] = Stat::make(
                 'Total Unit',
                 Ruangan::select('unit')->distinct()->count('unit')
             )
-                ->description('Jumlah total kantor/unit')
-                ->color('success');
+                ->description('Jumlah total kantor/unit');
         }
 
-        // 🔹 Total Barang — selalu ditampilkan untuk semua role
         $totalBarang = Barang::when(
             $user->role !== 'Admin Utama',
             fn($query) => $query->whereHas('ruangan', fn($q) => $q->where('unit', $user->unit))
