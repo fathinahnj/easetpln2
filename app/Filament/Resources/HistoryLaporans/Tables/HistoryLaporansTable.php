@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\HistoryLaporans\Tables;
 
 use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
@@ -27,7 +28,8 @@ class HistoryLaporansTable
                 TextColumn::make('deskripsi')
                     ->wrap(),
                 TextColumn::make('tanggal_laporan')
-                    ->dateTime()
+                    ->dateTime('d M Y H:i:s')
+                    ->timezone('Asia/Makassar')
                     ->sortable(),
                 TextColumn::make('created_at')
                     ->dateTime()
@@ -42,8 +44,16 @@ class HistoryLaporansTable
                 //
             ])
             ->recordActions([
-                ViewAction::make(),
-                EditAction::make(),
+                ViewAction::make()
+                    ->icon('heroicon-o-eye')
+                    ->label('')
+                    ->tooltip('Lihat Detail')
+                    ->requiresConfirmation(true),
+                DeleteAction::make()
+                    ->icon('heroicon-o-trash')
+                    ->label('')
+                    ->tooltip('Hapus')
+                    ->requiresConfirmation(true),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
