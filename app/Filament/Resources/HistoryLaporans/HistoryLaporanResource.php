@@ -7,7 +7,6 @@ use App\Filament\Resources\HistoryLaporans\Pages\EditHistoryLaporan;
 use App\Filament\Resources\HistoryLaporans\Pages\ListHistoryLaporans;
 use App\Filament\Resources\HistoryLaporans\Pages\ViewHistoryLaporan;
 use App\Filament\Resources\HistoryLaporans\Schemas\HistoryLaporanForm;
-use App\Filament\Resources\HistoryLaporans\Schemas\HistoryLaporanInfolist;
 use App\Filament\Resources\HistoryLaporans\Tables\HistoryLaporansTable;
 use BackedEnum;
 use Filament\Support\Icons\Heroicon;
@@ -21,6 +20,7 @@ use Filament\Schemas\Schema;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
+use App\Filament\Resources\HistoryLaporans\Schemas\HistoryLaporanInfolist;
 
 class HistoryLaporanResource extends Resource
 {
@@ -42,11 +42,6 @@ class HistoryLaporanResource extends Resource
     public static function table(Table $table): Table
     {
         return HistoryLaporansTable::table($table);
-    }
-
-    public static function infolist(Schema $schema): Schema
-    {
-        return HistoryLaporanInfolist::configure($schema);
     }
 
     public static function getRelations(): array

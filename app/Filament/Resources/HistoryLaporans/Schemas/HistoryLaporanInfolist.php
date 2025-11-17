@@ -23,6 +23,7 @@ class HistoryLaporanInfolist
 
                 TextEntry::make('tanggal_laporan')
                     ->label('Tanggal Laporan'),
+
             ]);
     }
 }
